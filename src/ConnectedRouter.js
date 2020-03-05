@@ -84,7 +84,15 @@ const createConnectedRouter = structure => {
 
       const { Router, shallowTimeTravel, reducerKey, store } = this.props
       // Extract store's location
-      const storeLocation = getIn(store.getState(), [reducerKey, 'location'])
+
+        let __state = store.getState()
+
+        // suggest immutable.map
+        if (__state.constructor.name === 'Map'){
+          __state = store.getState().toJS()
+        }
+
+      const storeLocation = getIn(__state, [reducerKey, 'location'])
       const { pathname: pathnameInStore, search: searchInStore, hash: hashInStore } = storeLocation
 
       // Extract Router's location

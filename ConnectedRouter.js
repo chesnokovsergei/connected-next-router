@@ -87,7 +87,14 @@ var createConnectedRouter = function createConnectedRouter(structure) {
             reducerKey = _this$props.reducerKey,
             store = _this$props.store; // Extract store's location
 
-        var storeLocation = getIn(store.getState(), [reducerKey, 'location']);
+        var __state = store.getState(); // suggest immutable.map
+
+
+        if (__state.constructor.name === 'Map') {
+          __state = store.getState().toJS();
+        }
+
+        var storeLocation = getIn(__state, [reducerKey, 'location']);
         var pathnameInStore = storeLocation.pathname,
             searchInStore = storeLocation.search,
             hashInStore = storeLocation.hash; // Extract Router's location
